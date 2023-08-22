@@ -13,6 +13,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             <body className={inter.className}>
                 <Navbar />
                 <Container className="mt-20">{children}</Container>
+                {/* Footer */}
             </body>
         </html>
     );

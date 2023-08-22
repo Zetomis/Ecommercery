@@ -8,13 +8,14 @@ import PopupWidget from "../widgets/PopupWidget";
 import { useState } from "react";
 import Link from "next/link";
 import Divider from "../small/Divider";
+import UserButtonSkeleton from "../skeleton/components/UserButtonSkeleton";
 
 const UserButton = () => {
     const { data: session, status } = useSession();
     const [isShowing, setIsShowing] = useState(false);
 
     if (status === "loading") {
-        return null;
+        return <UserButtonSkeleton />;
     }
 
     if (status === "unauthenticated") {
@@ -61,6 +62,13 @@ const UserButton = () => {
                         className="button ghost w-full text-right"
                     >
                         Cart
+                    </Link>
+                    <Divider type="horizontal" />
+                    <Link
+                        href={`/manage`}
+                        className="button ghost w-full text-right"
+                    >
+                        Manage
                     </Link>
                     <Divider type="horizontal" />
                     <Button

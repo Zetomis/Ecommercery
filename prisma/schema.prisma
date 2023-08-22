@@ -10,9 +10,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum CATEGORY {
+  MEN
+  WOMEN
+  KIDS
+}
+
 model User {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   name  String
   email String @unique
   image String
+
+  products Product[]
+}
+
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  image       String[]
+  price       Int
+  description String
+  category    CATEGORY
+
+  sellerId String @db.ObjectId
+  seller   User   @relation(fields: [sellerId], references: [id])
 }
