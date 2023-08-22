@@ -1,3 +1,6 @@
+"use client";
+
+import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 
 const Container = ({
@@ -9,7 +12,7 @@ const Container = ({
 }) => {
     return (
         <div className={`w-full max-w-screen-lg mx-auto px-4 ${className}`}>
-            {children}
+            <SessionProvider>{children}</SessionProvider>
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Container from "./Container";
 import Logo from "./Logo";
+import UserButton from "../user/UserButton";
 
 const Navbar = () => {
     return (
@@ -13,12 +14,7 @@ const Navbar = () => {
                     <Link href={"/products?category=women"}>Women</Link>
                     <Link href={"/products?category=kids"}>Kids</Link>
                 </div>
-                <Link
-                    href={"/sign-in"}
-                    className="button default w-fit justify-self-end"
-                >
-                    Sign In
-                </Link>
+                <UserButton />
             </Container>
         </div>
     );
