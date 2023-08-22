@@ -5,7 +5,7 @@ import UserButton from "../user/UserButton";
 
 const Navbar = () => {
     return (
-        <div className="fixed top-0 inset-x-0 bg-white py-3 shadow-lg">
+        <div className="fixed top-0 inset-x-0 bg-white py-3 shadow-lg z-10">
             <Container className="grid grid-cols-3 items-center">
                 <Logo />
                 <div className="flex justify-between font-semibold text-slate-800">

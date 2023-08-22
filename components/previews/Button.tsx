@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-type ButtonType = "default";
+type ButtonType = "default" | "ghost";
 
 const Button = ({
     children,

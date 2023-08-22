@@ -8,3 +8,6 @@
 .button.default {
     @apply bg-slate-800 text-slate-200;
 }
+.button.ghost {
+    @apply bg-slate-200 text-slate-800;
+}
