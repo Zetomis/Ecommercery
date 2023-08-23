@@ -32,7 +32,7 @@ const UserButton = () => {
 
     if (status === "authenticated") {
         return (
-            <div className="relative justify-self-end ">
+            <div className="relative justify-self-end">
                 <button
                     className="flex gap-x-2"
                     onClick={() => setIsShowing(!isShowing)}

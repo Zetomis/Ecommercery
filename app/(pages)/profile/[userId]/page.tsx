@@ -3,13 +3,13 @@
 import { getUser } from "@/libs/actions/user.actions";
 import { User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import Button from "@/components/previews/Button";
 import UserPageSkeleton from "@/components/skeleton/pages/UserPageSkeleton";
+import NotFound from "@/components/previews/NotFound";
 
 const ProfilePage = ({ params }: { params: { userId: string } }) => {
-    const userQuery = useQuery<User | Error>({
+    const userQuery = useQuery<User | null>({
         queryKey: ["user", params.userId],
         queryFn: () => {
             return getUser(params.userId);
@@ -20,8 +20,8 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
         return <UserPageSkeleton />;
     }
 
-    if (userQuery.isError || userQuery.data instanceof Error) {
-        return notFound();
+    if (userQuery.isError || !userQuery.data) {
+        return <NotFound />;
     }
 
     return (
