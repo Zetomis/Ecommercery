@@ -9,7 +9,12 @@ const ProductCard = ({ product }: { product: Product }) => {
             {" "}
             <Link href={`/product?id=${product.id}`}>
                 <div className="w-full h-auto aspect-square rounded overflow-hidden relative">
-                    <Image src={product.images[0]} alt="n/a" fill />
+                    <Image
+                        src={product.images[0]}
+                        alt="n/a"
+                        fill
+                        objectFit="cover"
+                    />
                 </div>
                 <div className="grid gap-y-2">
                     <h1 className="font-semibold truncate text-slate-800 text-base block">

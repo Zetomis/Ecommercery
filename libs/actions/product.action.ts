@@ -1,7 +1,7 @@
 "use server";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { MAX_PRODUCTS_PER_PAGE } from "@/constants";
+import { MAX_PRODUCTS_PER_PAGE, SortMethodType } from "@/constants";
 import { CATEGORY, Prisma, PrismaClient, Product } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
@@ -31,7 +31,11 @@ export const createProduct = async (
     });
 };
 
-export const getUserProducts = async (userId: string, pageNumber: number) => {
+export const getUserProducts = async (
+    userId: string,
+    pageNumber: number,
+    sortMethod: SortMethodType
+) => {
     const prisma = new PrismaClient();
     const products = await prisma.product.findMany({
         where: {
@@ -39,6 +43,9 @@ export const getUserProducts = async (userId: string, pageNumber: number) => {
         },
         skip: (pageNumber - 1) * MAX_PRODUCTS_PER_PAGE,
         take: MAX_PRODUCTS_PER_PAGE,
+        orderBy: {
+            createdAt: "desc",
+        },
     });
     const amount = await prisma.product.count({
         where: {
@@ -50,7 +57,8 @@ export const getUserProducts = async (userId: string, pageNumber: number) => {
 
 export const getProductsByCategory = async (
     category: string | null,
-    pageNumber: number
+    pageNumber: number,
+    sortMethod: SortMethodType
 ) => {
     const prisma = new PrismaClient();
 
@@ -78,6 +86,9 @@ export const getProductsByCategory = async (
             },
             skip: (pageNumber - 1) * MAX_PRODUCTS_PER_PAGE,
             take: MAX_PRODUCTS_PER_PAGE,
+            orderBy: {
+                createdAt: "desc",
+            },
         });
         const amount = await prisma.product.count({
             where: {
@@ -89,6 +100,9 @@ export const getProductsByCategory = async (
         const products = await prisma.product.findMany({
             skip: (pageNumber - 1) * MAX_PRODUCTS_PER_PAGE,
             take: MAX_PRODUCTS_PER_PAGE,
+            orderBy: {
+                createdAt: "desc",
+            },
         });
         const amount = await prisma.product.count();
         return { products, amount };
