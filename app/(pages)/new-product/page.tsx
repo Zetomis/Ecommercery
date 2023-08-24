@@ -36,7 +36,6 @@ const NewProductPage = () => {
                 imageURLs = newImageURLs;
                 // setImageURLs(newImageURLs);
             }
-            console.log("aa");
             productMutation.mutate();
         },
         onUploadError: (error: any) => {

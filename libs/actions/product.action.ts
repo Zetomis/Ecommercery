@@ -115,5 +115,12 @@ export const getProduct = async (productId: string) => {
         where: {
             id: productId,
         },
+        include: {
+            comments: {
+                include: {
+                    author: true,
+                },
+            },
+        },
     });
 };
