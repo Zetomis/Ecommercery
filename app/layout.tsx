@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 const RootLayout = ({ children }: { children: ReactNode }) => {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={`${inter.className}`}>
                 <Navbar />
                 <Container className="pt-20">{children}</Container>
                 {/* Footer */}

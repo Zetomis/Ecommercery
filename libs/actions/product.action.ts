@@ -2,7 +2,7 @@
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { MAX_PRODUCTS_PER_PAGE } from "@/constants";
-import { CATEGORY, PrismaClient, Product } from "@prisma/client";
+import { CATEGORY, Prisma, PrismaClient, Product } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 interface createProductProps {
@@ -46,4 +46,60 @@ export const getUserProducts = async (userId: string, pageNumber: number) => {
         },
     });
     return { products, amount };
+};
+
+export const getProductsByCategory = async (
+    category: string | null,
+    pageNumber: number
+) => {
+    const prisma = new PrismaClient();
+
+    let currentCategory: CATEGORY | null = null;
+
+    switch (category) {
+        case "men":
+            currentCategory = CATEGORY.MEN;
+            break;
+        case "women":
+            currentCategory = CATEGORY.WOMEN;
+            break;
+        case "kids":
+            currentCategory = CATEGORY.KIDS;
+            break;
+        default:
+            currentCategory = null;
+            break;
+    }
+
+    if (currentCategory) {
+        const products = await prisma.product.findMany({
+            where: {
+                category: currentCategory,
+            },
+            skip: (pageNumber - 1) * MAX_PRODUCTS_PER_PAGE,
+            take: MAX_PRODUCTS_PER_PAGE,
+        });
+        const amount = await prisma.product.count({
+            where: {
+                category: currentCategory,
+            },
+        });
+        return { products, amount };
+    } else {
+        const products = await prisma.product.findMany({
+            skip: (pageNumber - 1) * MAX_PRODUCTS_PER_PAGE,
+            take: MAX_PRODUCTS_PER_PAGE,
+        });
+        const amount = await prisma.product.count();
+        return { products, amount };
+    }
+};
+
+export const getProduct = async (productId: string) => {
+    const prisma = new PrismaClient();
+    return await prisma.product.findUnique({
+        where: {
+            id: productId,
+        },
+    });
 };

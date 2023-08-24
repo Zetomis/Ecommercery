@@ -134,23 +134,16 @@ const NewProductPage = () => {
                 name="category"
                 id="category"
                 className="select cursor-pointer"
+                onChange={(event) => {
+                    setCategory(event.target.value as CATEGORY);
+                }}
                 required
             >
-                <option value="MEN" onSelect={() => setCategory(CATEGORY.MEN)}>
+                <option value={CATEGORY.MEN} selected>
                     Men
                 </option>
-                <option
-                    value="WOMEN"
-                    onSelect={() => setCategory(CATEGORY.WOMEN)}
-                >
-                    Women
-                </option>
-                <option
-                    value="KIDS"
-                    onSelect={() => setCategory(CATEGORY.KIDS)}
-                >
-                    Kids
-                </option>
+                <option value={CATEGORY.WOMEN}>Women</option>
+                <option value={CATEGORY.KIDS}>Kids</option>
             </select>
 
             <label htmlFor="description" className="label">
