@@ -6,7 +6,7 @@ import { useUploadThing } from "@/libs/utils/uploadthing";
 import { CATEGORY, Product } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 let imageURLs: string[] = [];
 
@@ -34,8 +34,10 @@ const NewProductPage = () => {
             const newImageURLs = files?.map((f) => f.url);
             if (newImageURLs) {
                 imageURLs = newImageURLs;
-                productMutation.mutate();
+                // setImageURLs(newImageURLs);
             }
+            console.log("aa");
+            productMutation.mutate();
         },
         onUploadError: (error: any) => {
             console.log(error);
@@ -56,16 +58,18 @@ const NewProductPage = () => {
         );
     }
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (images && images.length > 10) {
             alert("Max images count is 10");
             setImages([]);
             return;
         }
-        startUpload(images).then(() => {
-            productMutation.mutate();
-        });
+        if (images.length === 0) {
+            alert("Require Image");
+            return;
+        }
+        await startUpload(images);
     };
 
     return (
@@ -109,7 +113,6 @@ const NewProductPage = () => {
                     }
                     setImages(newImages);
                 }}
-                required
             ></input>
 
             <label htmlFor="price" className="label">

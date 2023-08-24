@@ -1,6 +1,7 @@
 "use server";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { MAX_PRODUCTS_PER_PAGE } from "@/constants";
 import { CATEGORY, PrismaClient, Product } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
@@ -28,4 +29,21 @@ export const createProduct = async (
             sellerId: userId,
         },
     });
+};
+
+export const getUserProducts = async (userId: string, pageNumber: number) => {
+    const prisma = new PrismaClient();
+    const products = await prisma.product.findMany({
+        where: {
+            sellerId: userId,
+        },
+        skip: (pageNumber - 1) * MAX_PRODUCTS_PER_PAGE,
+        take: MAX_PRODUCTS_PER_PAGE,
+    });
+    const amount = await prisma.product.count({
+        where: {
+            sellerId: userId,
+        },
+    });
+    return { products, amount };
 };

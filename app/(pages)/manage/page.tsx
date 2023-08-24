@@ -2,6 +2,7 @@
 
 import Button from "@/components/previews/Button";
 import Divider from "@/components/small/Divider";
+import UserProductsDisplay from "@/components/user/UserProductsDisplay";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -12,28 +13,29 @@ const ManagePage = () => {
         return null;
     }
 
-    if (status === "unauthenticated") {
+    if (status === "authenticated") {
         return (
-            <div>
-                <h1 className="text-center text-4xl font-extrabold">
-                    Sign In to continue
-                </h1>
+            <div className="grid gap-y-2">
+                <div className="flex justify-between items-center">
+                    <h1 className="font-semibold text-xl">
+                        {session?.user.name}
+                        {"'s "}Store
+                    </h1>
+                    <Link href={"/new-product"} className="button default">
+                        Add new Product
+                    </Link>
+                </div>
+                <Divider type="horizontal" />
+                <UserProductsDisplay userId={session.user.id} />
             </div>
         );
     }
 
     return (
-        <div className="grid gap-y-2">
-            <div className="flex justify-between items-center">
-                <h1 className="font-semibold text-xl">
-                    {session?.user.name}
-                    {"'s "}Store
-                </h1>
-                <Link href={"/new-product"} className="button default">
-                    Add new Product
-                </Link>
-            </div>
-            <Divider type="horizontal" />
+        <div>
+            <h1 className="text-center text-4xl font-extrabold">
+                Sign In to continue
+            </h1>
         </div>
     );
 };
