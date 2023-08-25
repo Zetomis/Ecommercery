@@ -1,9 +1,34 @@
+"use client";
+
 import { Product } from "@prisma/client";
 import Image from "next/image";
 import Button from "../previews/Button";
 import Link from "next/link";
+import { Session } from "next-auth";
+import { useMutation } from "@tanstack/react-query";
+import { deleteProduct } from "@/libs/actions/product.action";
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({
+    product,
+    session,
+    refetch,
+}: {
+    product: Product;
+    session?: Session | null;
+    refetch?: () => void;
+}) => {
+    const deleteProductMutation = useMutation({
+        mutationKey: ["product", { id: product.id }],
+        mutationFn: () => {
+            return deleteProduct(product.id);
+        },
+        onSuccess: () => {
+            if (refetch) {
+                refetch();
+            }
+        },
+    });
+
     return (
         <div className="w-full border border-slate-400 rounded px-3 py-4 flex flex-col gap-y-4">
             {" "}
@@ -26,6 +51,14 @@ const ProductCard = ({ product }: { product: Product }) => {
                 </div>
             </Link>
             <Button>Add to Cart</Button>
+            {session && session.user.id === product.sellerId && (
+                <Button
+                    onClick={() => deleteProductMutation.mutate()}
+                    isLoading={deleteProductMutation.isLoading}
+                >
+                    Delete
+                </Button>
+            )}
         </div>
     );
 };

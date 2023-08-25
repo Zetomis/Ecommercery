@@ -14,10 +14,10 @@ const CommentCard = ({
         <div className="border border-slate-400 rounded px-4 py-2">
             <Link
                 href={`/profile/${comment.authorId}`}
-                className="flex items-center gap-x-2"
+                className="flex items-center gap-x-2 mb-4"
             >
                 <UserAvatar src={author.image} />
-                <h1 className="font-semibold text-slate-600 text-lg mb-2">
+                <h1 className="font-semibold text-slate-600 text-lg">
                     {author.name}
                 </h1>
             </Link>

@@ -124,3 +124,12 @@ export const getProduct = async (productId: string) => {
         },
     });
 };
+
+export const deleteProduct = async (productId: string) => {
+    const prisma = new PrismaClient();
+    return await prisma.product.delete({
+        where: {
+            id: productId,
+        },
+    });
+};

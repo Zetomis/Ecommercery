@@ -10,10 +10,12 @@ import Divider from "../small/Divider";
 import Button from "../previews/Button";
 import { MAX_PRODUCTS_PER_PAGE, SortMethodType } from "@/constants";
 import SortProductSelect from "../previews/SortProductsSelect";
+import { useSession } from "next-auth/react";
 
 const UserProductsDisplay = ({ userId }: { userId: string }) => {
     const [pageNumber, setPageNumber] = useState(1);
     const [sortMethod, setSortMethod] = useState<SortMethodType>("NAME");
+    const { data: session, status } = useSession();
 
     const userProductsQuery = useQuery({
         queryKey: ["userProduct", { userId, pageNumber }],
@@ -62,7 +64,14 @@ const UserProductsDisplay = ({ userId }: { userId: string }) => {
                         return 0;
                     })
                     .map((item) => (
-                        <ProductCard product={item} />
+                        <ProductCard
+                            key={item.id}
+                            product={item}
+                            session={session}
+                            refetch={() => {
+                                userProductsQuery.refetch();
+                            }}
+                        />
                     ))}
             </div>
             <Divider type="horizontal" />

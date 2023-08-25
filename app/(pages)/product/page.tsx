@@ -84,9 +84,15 @@ const ProductPage = () => {
                     }}
                 />
             )}
-            {productQuery.data.comments.map((comment) => (
-                <CommentCard comment={comment} author={comment.author} />
-            ))}
+            <div className="flex flex-col gap-y-3">
+                {productQuery.data.comments.map((comment) => (
+                    <CommentCard
+                        key={comment.id}
+                        comment={comment}
+                        author={comment.author}
+                    />
+                ))}
+            </div>
         </div>
     );
 };

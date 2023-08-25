@@ -58,7 +58,7 @@ const ProductsDisplay = ({ category }: { category: string | null }) => {
                         return 0;
                     })
                     .map((item) => (
-                        <ProductCard product={item} />
+                        <ProductCard key={item.id} product={item} />
                     ))}
             </div>
             <Divider type="horizontal" />
