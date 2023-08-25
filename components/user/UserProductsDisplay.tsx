@@ -1,7 +1,7 @@
 "use client";
 
 import { getUserProducts } from "@/libs/actions/product.action";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Loading from "../previews/Loading";
 import ServerError from "../previews/ServerError";
@@ -16,7 +16,7 @@ const UserProductsDisplay = ({ userId }: { userId: string }) => {
     const [sortMethod, setSortMethod] = useState<SortMethodType>("NAME");
 
     const userProductsQuery = useQuery({
-        queryKey: ["userProduct", userId, pageNumber],
+        queryKey: ["userProduct", { userId, pageNumber }],
         queryFn: () => {
             return getUserProducts(userId, pageNumber, sortMethod);
         },

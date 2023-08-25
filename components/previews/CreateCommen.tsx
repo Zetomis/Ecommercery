@@ -3,14 +3,17 @@
 import { FormEvent, useState } from "react";
 import Button from "./Button";
 import { createComment } from "@/libs/actions/comment.actions";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import { Comment, Product } from "@prisma/client";
 
 const CreateComment = ({
     productId,
     authorId,
+    refetch,
 }: {
     productId: string;
     authorId: string;
+    refetch: () => void;
 }) => {
     const [content, setContent] = useState("");
     const createCommentMutation = useMutation({
@@ -19,6 +22,9 @@ const CreateComment = ({
             const comment = createComment(content, productId, authorId);
             setContent("");
             return comment;
+        },
+        onSuccess: () => {
+            refetch();
         },
     });
 

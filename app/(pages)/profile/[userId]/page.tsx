@@ -10,7 +10,7 @@ import NotFound from "@/components/previews/NotFound";
 
 const ProfilePage = ({ params }: { params: { userId: string } }) => {
     const userQuery = useQuery<User | null>({
-        queryKey: ["user", params.userId],
+        queryKey: ["user", { id: params.userId }],
         queryFn: () => {
             return getUser(params.userId);
         },

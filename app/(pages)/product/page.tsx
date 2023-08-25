@@ -4,7 +4,7 @@ import Button from "@/components/previews/Button";
 import Loading from "@/components/previews/Loading";
 import NotFound from "@/components/previews/NotFound";
 import ServerError from "@/components/previews/ServerError";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import Image from "next/image";
@@ -27,7 +27,7 @@ const ProductPage = () => {
     }
 
     const productQuery = useQuery({
-        queryKey: ["product", id],
+        queryKey: ["product", { id }],
         queryFn: () => {
             return getProduct(id);
         },
@@ -76,7 +76,13 @@ const ProductPage = () => {
                 {productQuery.data.comments.length} Comment(s):
             </h1>
             {status == "authenticated" && session && (
-                <CreateComment productId={id} authorId={session.user.id} />
+                <CreateComment
+                    productId={id}
+                    authorId={session.user.id}
+                    refetch={() => {
+                        productQuery.refetch();
+                    }}
+                />
             )}
             {productQuery.data.comments.map((comment) => (
                 <CommentCard comment={comment} author={comment.author} />

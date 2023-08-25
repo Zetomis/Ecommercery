@@ -15,7 +15,7 @@ const ProductsDisplay = ({ category }: { category: string | null }) => {
     const [pageNumber, setPageNumber] = useState(1);
     const [sortMethod, setSortMethod] = useState<SortMethodType>("NAME");
     const productsQuery = useQuery({
-        queryKey: ["products", { category }, pageNumber],
+        queryKey: ["products", { category, pageNumber }],
         queryFn: () => {
             return getProductsByCategory(category, pageNumber, sortMethod);
         },
